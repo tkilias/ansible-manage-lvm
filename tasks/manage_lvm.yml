@@ -14,15 +14,15 @@
     size: "{{ item.1.size }}"
     shrink: no
     opts: |-
-      {%if lvmoptions is defined %}
-        {%if lvmoptions.stripes is defined %}
-          --stripes {{ lvmoptions.mirrors }}
+      {%if item.1.lvmoptions is defined %}
+        {%if item.1.lvmoptions.stripes is defined %}
+          --stripes {{ item.1.lvmoptions.mirrors }}
         {% endif %}
-        {%if lvmoptions.mirrors is defined %}
-          --mirrors {{ lvmoptions.stripes }}
+        {%if item.1.lvmoptions.mirrors is defined %}
+          --mirrors {{ item.1.lvmoptions.stripes }}
         {% endif %}
-        {%if lvmoptions.other is defined %}
-          {{ lvmoptions.other }}
+        {%if item.1.lvmoptions.other is defined %}
+          {{ item.1.lvmoptions.other }}
         {% endif %}
       {% endif %}
     state: present
