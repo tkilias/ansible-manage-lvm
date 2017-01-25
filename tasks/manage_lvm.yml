@@ -13,16 +13,17 @@
     lv: "{{ item.1.lvname }}"
     size: "{{ item.1.size }}"
     shrink: no
+    pvs: "{{ item.1.disks | default([]) | join(',') }}"
     opts: |-
       {%if item.1.lvmoptions is defined %}
         {%if item.1.lvmoptions.type is defined %}
           --type {{ item.1.lvmoptions.type }}
         {% endif %}
         {%if item.1.lvmoptions.stripes is defined %}
-          --stripes {{ item.1.lvmoptions.mirrors }}
+          --stripes {{ item.1.lvmoptions.stripes }}
         {% endif %}
         {%if item.1.lvmoptions.mirrors is defined %}
-          --mirrors {{ item.1.lvmoptions.stripes }}
+          --mirrors {{ item.1.lvmoptions.mirrors }}
         {% endif %}
         {%if item.1.lvmoptions.other is defined %}
           {{ item.1.lvmoptions.other }}
