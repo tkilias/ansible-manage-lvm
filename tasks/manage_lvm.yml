@@ -13,6 +13,18 @@
     lv: "{{ item.1.lvname }}"
     size: "{{ item.1.size }}"
     shrink: no
+    opts: |-
+      {%if lvmoptions is defined %}
+        {%if lvmoptions.stripes is defined %}
+          --stripes {{ lvmoptions.mirrors }}
+        {% endif %}
+        {%if lvmoptions.mirrors is defined %}
+          --mirrors {{ lvmoptions.stripes }}
+        {% endif %}
+        {%if lvmoptions.other is defined %}
+          {{ lvmoptions.other }}
+        {% endif %}
+      {% endif %}
     state: present
   register: lvm
   with_subelements:
@@ -24,7 +36,7 @@
   filesystem:
     fstype: "{{ item.1.filesystem }}"
     dev: "/dev/{{ item.0.vgname }}/{{ item.1.lvname }}"
-    resizefs: yes "{{ item.1.filesystem != 'swap' and item.1.filesystem != 'xfs' and item.1.resizefs | default(false) }}"#todo confirm explicit and exclude xfs ans swap
+    resizefs: "{{ item.1.filesystem != 'swap' and item.1.filesystem != 'xfs' and item.1.resizefs | default(false) }}"
   with_subelements:
     - "{{ lvm_groups }}"
     - lvnames

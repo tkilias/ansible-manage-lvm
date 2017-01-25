@@ -15,6 +15,9 @@ lvm_groups:
         size: 40g  #define size of lvol...100%FREE, 10g, 1024 (megabytes by default)
         create: true  #defines if lvol should exist or be removed...true or false
         filesystem: ext4  #defines filesystem to format lvol as
+        lvmoptions:
+          stripes: 2
+          mirrors: 2
         mount: true
         mntp: /  #defines mountpoint for lvol
   - vgname: test-vg
