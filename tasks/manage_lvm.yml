@@ -2,7 +2,7 @@
 - name: manage_lvm | creating new LVM volume group(s)
   lvg:
     vg: "{{ item.vgname }}"
-    pvs: "{{ item.disks }}"
+    pvs: "{{ item.disks | join(',') }}"
     state: present
   with_items: "{{ lvm_groups }}"
   when: item.create is defined and item.create
@@ -15,6 +15,9 @@
     shrink: no
     opts: |-
       {%if item.1.lvmoptions is defined %}
+        {%if item.1.lvmoptions.type is defined %}
+          --type {{ item.1.lvmoptions.type }}
+        {% endif %}
         {%if item.1.lvmoptions.stripes is defined %}
           --stripes {{ item.1.lvmoptions.mirrors }}
         {% endif %}
